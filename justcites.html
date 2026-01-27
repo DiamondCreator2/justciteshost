@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JustCites</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        legal: {
+                            50: '#f0f7ff', // Lighter blue tint
+                            100: '#e0effe',
+                            600: '#2563eb',
+                            800: '#1e40af',
+                            900: '#1e3a8a', // Deep Blue
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-blue-50 min-h-screen flex flex-col items-center justify-center p-4 font-sans text-blue-900">
+
+    <!-- Main Card Container -->
+    <div class="w-full max-w-2xl bg-white rounded-2xl shadow-xl overflow-hidden border border-blue-100">
+        
+        <!-- Header Banner -->
+        <div class="relative p-10 text-center overflow-hidden group bg-blue-900">
+            <!-- Background Image: Courthouse/Legal Architecture -->
+            <img src="https://images.unsplash.com/photo-1569407228235-9a744831a150?auto=format&fit=crop&w=2000&q=80" 
+                 class="absolute inset-0 w-full h-full object-cover opacity-100"
+                 alt="Courthouse Architecture"
+                 onerror="this.style.display='none'">
+            
+            <!-- Dark Blue Overlay for Text Contrast -->
+            <div class="absolute inset-0 bg-blue-900/85 mix-blend-multiply"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-blue-900 via-blue-900/60 to-transparent"></div>
+
+            <!-- Decorative Light Flare -->
+            <div class="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white/20 rounded-full blur-2xl z-0"></div>
+            
+            <h1 class="font-serif text-white text-4xl md:text-5xl font-bold tracking-tight relative z-10 drop-shadow-sm">JustCites</h1>
+            <p class="text-blue-100 mt-2 text-sm font-medium uppercase tracking-widest relative z-10 drop-shadow-sm">Saving Time on Citing Cases</p>
+        </div>
+
+        <div class="p-8 md:p-10 flex flex-col items-center">
+            
+            <!-- Input Section -->
+            <div class="w-full max-w-lg relative group">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-blue-400 group-focus-within:text-blue-600 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+                <input id="search" 
+                    class="w-full pl-11 pr-4 py-4 bg-blue-50/30 border border-blue-200 rounded-xl text-lg text-blue-900 placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all shadow-sm" 
+                    placeholder="Type the case name here (e.g., Brown v. Board of Education)">
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex flex-col sm:flex-row gap-3 mt-6 w-full max-w-lg">
+                <button onclick="search()" 
+                    class="flex-1 bg-blue-800 text-white font-medium py-3 px-6 rounded-lg shadow-md hover:bg-blue-900 hover:shadow-lg transform active:scale-95 transition-all duration-200">
+                    Abbreviate Case
+                </button>
+                <button onclick="triggerGSearch()" 
+                    class="flex-1 bg-white text-blue-800 font-medium py-3 px-6 border border-blue-200 rounded-lg hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300 transition-all duration-200">
+                    Find on Google
+                </button>
+            </div>
+            
+            <!-- Result Area -->
+            <div id="result-container" class="w-full max-w-lg mt-8 min-h-[80px] flex items-center justify-center p-6 bg-blue-100 rounded-xl border border-blue-300 shadow-inner">
+                <p id="para1" class="font-serif text-xl md:text-2xl text-blue-900 text-center italic transition-all empty:hidden">
+                    <!-- Results appear here -->
+                    <span class="text-darkblue-700 not-italic text-base opacity-80">Citation result will appear here...</span>
+                </p>
+            </div>
+
+            <div class="w-full h-px bg-blue-100 my-8"></div>
+
+            <!-- Info Section -->
+            <div class="text-center space-y-4">
+                <p class="text-xs text-blue-600 uppercase tracking-wide font-semibold">Reference Source</p>
+                <p class="text-sm text-blue-800 leading-relaxed max-w-md mx-auto">
+                    Abbreviations based on <span class="font-serif font-bold text-blue-900">The Bluebook<sup>®</sup></span><br>
+                    <span class="text-xs text-blue-600">(Tables T6, T10.1, T11, & T12)</span>
+                </p>
+                <a href="https://guides.ll.georgetown.edu/bluebook/citing-cases" target="_blank" class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors">
+                    Review Citation Manual
+                    <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="bg-blue-50/50 border-t border-blue-100 p-6 text-center text-xs text-blue-600">
+            <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8">
+                <p>Created by <a href="https://www.meimark.com/jeff-pearson" target="_blank" class="font-semibold text-blue-700 hover:text-blue-900">Jeff Pearson</a></p>
+                <span class="hidden md:inline text-blue-300">|</span>
+                <p>Contact Us: <a href="mailto:justcites@gmail.com" class="hover:text-blue-800 transition-colors">justcites@gmail.com</a></p>
+                <span class="hidden md:inline text-blue-300">|</span>
+                <p>Developed by Garrett Pearson</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variable to store the processed text for the Google search
+        var box2 = "";
+
+        // List of full words
+        var wordlist = ["academic","academy","administrative","administration","administrator","administratrix","advertising","agriculture","agricultural","alliance","alternative","american","america","and","associate","association","atlantic","authority","automobile","automotive","avenue","bankruptcy","board","broadcaster","broadcasting","brotherhood","brothers","building","business","casualty","center","centre","central","chemical","coalition","college","commissioner","commission","committee","communication","community","company","compensation","computer","condominium","congressional","congress","consolidated","construction","continental","cooperative","corporate","corporation","corrections","correctional","county","defender","defense","department","detention","development","digital","director","discount","distributor","distributing","district","division","eastern","east","economical","economics","economic","economy","educational","education","electricity","electrical","electric","electronic","employee","employer","employment","enforcement","engineering","engineer","enterprise","entertainment","environmental","environment","equality","equipment","examiner","exchange","executive","executor","executrix","exploration","exploratory","exporter","exportation","federal","federation","fidelity","finance","financial","financing","foundation","general","global","government","group","guaranty","hospitality","hospital","housing","importer","importation","incorporated","indemnity","independence","independent","industry","industries","industrial","information","institute","institution","insurance","international","investment","investor","laboratory","liability","limited","litigation","machinery","machine","maintenance","management","manufacturer","manufacturing","maritime","marketing","market","mechanical","mechanic","medical","medicine","memorial","merchant","merchandise","merchandising","metropolitan","mortgage","municipal","mutual","national","natural","northern","north","northeastern","northeast","northwestern","northwest","number","opinion","organization","organizing","pacific","parish","partnership","personnel","personal","person","pharmaceutics","pharmaceutic","pharmaceuticals","pharmaceutical","preserve","preservation","probate","probation","production","product","professional","property","protection","publication","public","publishing","railroad","railway","refining","regional","rehabilitation","rehabilitative","reproduction","reproductive","resources","resource","restaurant","retirement","road","savings","schools","school","science","scientific","secretary","security","securities","service","shareholder","social","society","solution","southern","south","southeastern","southeast","southwestern","southwest","steamships","steamship","street","subcommittee","surety","systems","system","technical","technological","technology","telecommunication","telephone","telegraph","temporary","township","transcontinental","transportation","transport","trustee","trust","turnpike","uniform","university","utility","village","western","west","alabama","alaska","arizona","arkansas","california","colorado","connecticut","delaware","florida","georgia","hawaii","idaho","illinois","indiana","iowa","kansas","kentucky","louisiana","maine","maryland","massachusetts","michigan","minnesota","mississippi","missouri","montana","nebraska","nevada","new hampshire","new jersey","new mexico","new york","north carolina","north dakota","ohio","oklahoma","oregon","pennsylvania","rhode island","south carolina","south dakota","tennessee","texas","utah","vermont","virginia","washington","west virginia","wisconsin","wyoming","baltimore","boston","chicago","dallas","district of columbia","houston","los angeles","new york","philadelphia","phoenix","san francisco","american samoa","guam","northern mariana islands","puerto rico","virgin islands","administrative law judge","arbitrator","assemblymember","assemblyman","assemblywoman","assembly","attorney general","baron","chancellor","chief baron","chief judge","chief justice","commissioner","delegate","honorable","judges","justices","judge","lord justice","justice","magistrate","master of the rolls","mediator","referee","representative","senator","vice chancellor","january","february","march","april","may","june","july","august","september","october","november","december"];
+        
+        // List of abbreviations
+        var abrlist = ["Acad.","Acad.","Admin.","Admin.","Adm'r","Adm'x","Advert.","Agric.","Agric.","All.","Alt.","Am.","Am.","&","Assoc.","Ass'n","Atl.","Auth.","Auto.","Auto.","Ave.","Bankr.","Bd.","Broad.","Broad.","Bhd.","Bros.","Bldg.","Bus.","Cas.","Ctr.","Ctr.","Cent.","Chem.","Coal.","Coll.","Comm'r","Comm'n","Comm.","Commc'n","Cmty","Co.","Comp.","Comput.","Condo.","Cong.","Cong.","Consol.","Constr.","Cont'l","Coop.","Corp.","Corp.","Corr.","Corr.","Cty.","Def.","Def.","Dep't","Det.","Dev.","Dig.","Dir.","Disc.","Distrib.","Distrib.","Dist.","Div.","E.","E.","Econ.","Econ.","Econ.","Econ.","Educ.","Educ.","Elec.","Elec.","Elec.","Elec.","Emp.","Emp'r","Emp't","Enf't","Eng'g","Eng'r","Enter.","Entm't","Envtl.","Env't","Equal.","Equip.","Exam'r","Exch.","Exec.","Ex'r","Ex'x","Expl.","Expl.","Exp.","Exp.","Fed.","Fed'n","Fid.","Fin.","Fin.","Fin.","Found.","Gen.","Glob.","Gov't","Grp.","Guar.","Hosp.","Hosp.","Hous.","Imp.","Imp.","Inc.","Indem.","Indep.","Indep.","Indus.","Indus.","Indus.","Info.","Inst.","Inst.","Ins.","Int'l","Inv.","Inv'r","Lab.","Liab.","Ltd.","Litig.","Mach.","Mach.","Maint.","Mgmt.","Mfr.","Mfg.","Mar.","Mktg.","Mkt.","Mech.","Mech.","Med.","Med.","Mem'l","Merch.","Merch.","Merch.","Metro.","Mortg.","Mun.","Mut.","Nat'l","Nat.","N.","N.","Ne.","Ne.","Nw.","Nw.","No.","Op.","Org.","Org.","Pac.","Par.","P'ship","Pers.","Pers.","Pers.","Pharm.","Pharm.","Pharm.","Pharm.","Pres.","Pres.","Prob.","Prob.","Prod.","Prod.","Prof'l","Prop.","Prot.","Publ'n","Pub.","Publ'g","R.R.","Ry.","Ref.","Reg'l","Rehab.","Rehab.","Reprod.","Reprod.","Res.","Res.","Rest.","Ret.","Rd.","Sav.","Sch.","Sch.","Sci.","Sci.","Sec'y","Sec.","Sec.","Serv.","S'holder","Soc.","Soc'y","Sol.","S.","S.","Se.","Se.","Sw.","Sw.","S.S.","S.S.","St.","Subcomm.","Sur.","Sys.","Sys.","Tech.","Tech.","Tech.","Telecomm.","Tel.","Tel.","Temp.","Twp.","Transcon.","Transp.","Transp.","Tr.","Tr.","Tpk.","Unif.","Univ.","Util.","Vill.","W.","W.","Ala.","Alaska","Ariz.","Ark.","Cal.","Colo.","Conn.","Del.","Fla.","Ga.","Haw.","Idaho","Ill.","Ind.","Iowa","Kan.","Ky.","La.","Me.","Md.","Mass.","Mich.","Minn.","Miss.","Mo.","Mont.","Neb.","Nev.","N.H.","N.J.","N.M.","N.Y.","N.C.","N.D.","Ohio","Okla.","Or.","Pa.","R.I.","S.C.","S.D.","Tenn.","Tex.","Utah","Vt.","Va.","Wash.","W. Va.","Wis.","Wyo.","Balt.","Bos.","Chi.","Dall.","D.C.","Hous.","L.A.","N.Y.C.","Phila.","Phx.","S.F.","Am. Sam.","Guam","N. Mar. I.","P.R.","V.I.","A.L.J.","Arb.","Assemb.","Assemb.","Assemb.","Assemb.","Att'l Gen.","B.","C.","C.B.","C.J.","C.J.","Comm'r","Del.","Hon.","JJ.","JJ.","J.","L.J.","J.","Mag.","M.R.","Med.","Ref.","Rep.","Sen.","V.C.","Jan.","Feb.","Mar.","Apr.","May","June","July","Aug.","Sept.","Oct.","Nov.","Dec."];
+
+        // Handle Enter key in body
+        document.body.onkeyup = function(e) {
+            if(e.keyCode == 13) {
+                search();
+            }
+        };
+
+        function capitalize(str) {
+            if(!str) return "";
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function search() {
+            var inputElement = document.getElementById("search");
+            var rawValue = inputElement.value;
+            
+            // Pad spaces to match whole words
+            var box = " " + rawValue + " ";
+            var listLength = wordlist.length;
+            var i = 0;
+            
+            // Loop through the wordlist
+            while(i < listLength){
+                var wordy = wordlist[i];
+                var wordy0 = String(wordy);
+                // Create capitalized version
+                var wordy2 = wordy0.charAt(0).toUpperCase() + wordy0.slice(1);
+                var listy = abrlist[i];
+                
+                // Replace lowercase matches
+                if(box.toLowerCase().includes(" " + wordy + " ")){
+                    while(box.toLowerCase().includes(" " + wordy + " ")){
+                        box = box.replace(" " + wordy + " ", " " + listy + " ");
+                        box = box.replace(" " + wordy2 + " ", " " + listy + " ");
+                    }
+                }
+                
+                // Replace matches with commas
+                if(box.toLowerCase().includes(" " + wordy + ",")){
+                    while(box.toLowerCase().includes(" " + wordy + ",")){
+                        box = box.replace(" " + wordy + ",", " " + listy + ",");
+                        box = box.replace(" " + wordy2 + ",", " " + listy + ",");
+                    }
+                }
+                i++;
+            }
+            
+            // Cleanup spaces
+            box = box.replace(" ", ""); // Remove first space
+            box = box.slice(0, -1);     // Remove last space
+            
+            // Title case the result
+            box = box.split(' ').map(capitalize).join(' ');
+            
+            // Fix specific legal terms
+            box = box.replace(" V. ", " v. ");
+            box = box.replace(" V ", " v. ");
+            box = box.replace(" Re ", " re ");
+            
+            // Output
+            document.getElementById("para1").textContent = box;
+            box2 = box; // Store for gsearch
+        }
+
+        // Wrapper to call search then gsearch
+        function triggerGSearch() {
+            search();
+            gsearch();
+        }
+
+        function gsearch() {
+            var urlbox = box2;
+            if(!urlbox) {
+                // If box2 is empty, try grabbing from input directly or alert
+                urlbox = document.getElementById("search").value;
+            }
+            
+            // Replace spaces with +
+            urlbox = urlbox.replace(/ /g, "+");
+            
+            var url = "https://www.google.com/search?q=" + urlbox;
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
